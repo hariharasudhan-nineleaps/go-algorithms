@@ -15,6 +15,9 @@ func main() {
 	}
 
 	tree.String()
-	fmt.Println(tree.Search(130))
-	fmt.Println("Total count", tree.Count())
+	fmt.Println("Searching key 30 ---->", tree.Search(30))
+	fmt.Println("Searching key 130 ---->", tree.Search(130))
+	fmt.Println("Total count       ---->", tree.Count())
+	fmt.Println("Min value         ---->", tree.Min())
+	fmt.Println("Max value         ---->", tree.Max())
 }

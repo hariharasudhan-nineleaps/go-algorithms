@@ -22,14 +22,16 @@ type ItemBinarySearchTree struct {
 }
 
 func insert(node *Node, key int, value Item) {
-	if node.key < key {
+	if key < node.key {
 		if node.left == nil {
+			fmt.Println("Inserting", key, "left to node", node.key)
 			node.left = &Node{key, value, nil, nil}
 		} else {
 			insert(node.left, key, value)
 		}
 	} else {
 		if node.right == nil {
+			fmt.Println("Inserting", key, "right to node", node.key)
 			node.right = &Node{key, value, nil, nil}
 		} else {
 			insert(node.right, key, value)
@@ -63,6 +65,22 @@ func count(node *Node, counter *int) {
 	}
 }
 
+func minKey(node *Node) int {
+	if node.left != nil {
+		return minKey(node.left)
+	}
+
+	return node.key
+}
+
+func maxKey(node *Node) int {
+	if node.right != nil {
+		return maxKey(node.right)
+	}
+
+	return node.key
+}
+
 func (tree *ItemBinarySearchTree) Insert(key int, value Item) {
 	tree.lock.Lock()
 	defer tree.lock.Unlock()
@@ -86,14 +104,26 @@ func (tree *ItemBinarySearchTree) Search(key int) bool {
 	return search(tree.root, key)
 }
 
-func (tree *ItemBinarySearchTree) Min() {
+func (tree *ItemBinarySearchTree) Min() int {
 	tree.lock.Lock()
 	defer tree.lock.Unlock()
+
+	if tree.root == nil {
+		return 0
+	}
+
+	return minKey(tree.root)
 }
 
-func (tree *ItemBinarySearchTree) Max() {
+func (tree *ItemBinarySearchTree) Max() int {
 	tree.lock.Lock()
 	defer tree.lock.Unlock()
+
+	if tree.root == nil {
+		return 0
+	}
+
+	return maxKey(tree.root)
 }
 
 func (tree *ItemBinarySearchTree) Count() int {
