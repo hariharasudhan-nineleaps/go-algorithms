@@ -44,9 +44,9 @@ func search(node *Node, key int) bool {
 		return true
 	}
 
-	if node.key < key && node.left != nil {
+	if key < node.key && node.left != nil {
 		return search(node.left, key)
-	} else if node.key > key && node.right != nil {
+	} else if key > node.key && node.right != nil {
 		return search(node.right, key)
 	}
 
