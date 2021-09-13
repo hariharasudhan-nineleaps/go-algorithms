@@ -20,4 +20,7 @@ func main() {
 	fmt.Println("Total count       ---->", tree.Count())
 	fmt.Println("Min value         ---->", tree.Min())
 	fmt.Println("Max value         ---->", tree.Max())
+	fmt.Println("Pre-Order traversal -->", tree.PreOrderTraverse())
+	fmt.Println("In-Order traversal -->", tree.InOrderTraverse())
+	fmt.Println("Post-Order traversal -->", tree.PostOrderTraverse())
 }
