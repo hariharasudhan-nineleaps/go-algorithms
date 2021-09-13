@@ -81,6 +81,70 @@ func maxKey(node *Node) int {
 	return node.key
 }
 
+func preOrderTraverse(node *Node, values *[]int) {
+	if node != nil {
+		(*values) = append(*values, node.key)
+		preOrderTraverse(node.left, values)
+		preOrderTraverse(node.right, values)
+	}
+}
+
+func inOrderTraverse(node *Node, values *[]int) {
+	if node != nil {
+		inOrderTraverse(node.left, values)
+		(*values) = append(*values, node.key)
+		inOrderTraverse(node.right, values)
+	}
+}
+
+func postOrderTraverse(node *Node, values *[]int) {
+	if node != nil {
+		postOrderTraverse(node.left, values)
+		postOrderTraverse(node.right, values)
+		(*values) = append(*values, node.key)
+	}
+}
+
+func remove(node *Node, key int) *Node {
+	if node == nil {
+		return nil
+	}
+
+	if key < node.key {
+		node.left = remove(node.left, key)
+		return node
+	}
+
+	if key > node.key {
+		node.right = remove(node.right, key)
+		return node
+	}
+
+	// Node with no children
+	if node.left == nil && node.right == nil {
+		node = nil
+		return node
+	}
+
+	if node.left == nil {
+		node = node.right
+		return node
+	}
+
+	if node.right == nil {
+		node = node.left
+		return node
+	}
+
+	leftmostrightside := node.right
+	for leftmostrightside.right != nil && leftmostrightside.left != nil {
+		leftmostrightside = leftmostrightside.left
+	}
+	node.key, node.value = leftmostrightside.key, leftmostrightside.value
+	node.right = remove(node.right, node.key)
+	return node
+}
+
 func (tree *ItemBinarySearchTree) Insert(key int, value Item) {
 	tree.lock.Lock()
 	defer tree.lock.Unlock()
@@ -140,30 +204,6 @@ func (tree *ItemBinarySearchTree) Count() int {
 	return counter
 }
 
-func preOrderTraverse(node *Node, values *[]int) {
-	if node != nil {
-		(*values) = append(*values, node.key)
-		preOrderTraverse(node.left, values)
-		preOrderTraverse(node.right, values)
-	}
-}
-
-func inOrderTraverse(node *Node, values *[]int) {
-	if node != nil {
-		inOrderTraverse(node.left, values)
-		(*values) = append(*values, node.key)
-		inOrderTraverse(node.right, values)
-	}
-}
-
-func postOrderTraverse(node *Node, values *[]int) {
-	if node != nil {
-		postOrderTraverse(node.left, values)
-		postOrderTraverse(node.right, values)
-		(*values) = append(*values, node.key)
-	}
-}
-
 // Root, Left, Right
 func (tree *ItemBinarySearchTree) PreOrderTraverse() []int {
 	tree.lock.Lock()
@@ -203,6 +243,13 @@ func (tree *ItemBinarySearchTree) PostOrderTraverse() []int {
 
 	postOrderTraverse(tree.root, &values)
 	return values
+}
+
+func (tree *ItemBinarySearchTree) Remove(key int) int {
+	tree.lock.Lock()
+	defer tree.lock.Unlock()
+	remove(tree.root, key)
+	return 1
 }
 
 func (bst *ItemBinarySearchTree) String() {
