@@ -52,14 +52,76 @@ func (ll *ItemLinkedList) Insert(i int, item int) error {
 		return nil
 	}
 
+	prevnode := ll.head
+	nodeindex := 0
+
+	for nodeindex != i-1 {
+		nodeindex++
+		prevnode = prevnode.next
+	}
+
+	newnode := &Node{item, prevnode.next}
+	prevnode.next = newnode
+	ll.size++
+
 	return nil
 }
 
+// Removes a node at position i
+func (ll *ItemLinkedList) RemoveAt(i int) (int, error) {
+	if i < 0 || i > ll.size {
+		return -1, fmt.Errorf("Index out of bounds")
+	}
+
+	prevnode := ll.head
+	nodeindex := 0
+
+	for nodeindex != i-1 {
+		nodeindex++
+		prevnode = prevnode.next
+	}
+
+	removednode := prevnode.next
+	prevnode.next = removednode.next
+	ll.size--
+
+	return removednode.value, nil
+}
+
+//Returns the position of the value
+func (ll *ItemLinkedList) IndexOf(value int) int {
+	if ll.head == nil {
+		return -1
+	}
+
+	node := ll.head
+	index := 0
+	for node.next != nil && node.value != value && index != ll.size {
+		node = node.next
+		index++
+	}
+
+	if node.value == value {
+		return index
+	}
+
+	return -1
+}
+
+//Returns the linked list size
 func (ll *ItemLinkedList) Size() int {
 	ll.lock.Lock()
 	defer ll.lock.Unlock()
 
 	return ll.size
+}
+
+//Returns the first node, so we can iterate on it
+func (ll *ItemLinkedList) Head() *Node {
+	ll.lock.Lock()
+	defer ll.lock.Unlock()
+
+	return ll.head
 }
 
 // Insert adds an Item at position i
