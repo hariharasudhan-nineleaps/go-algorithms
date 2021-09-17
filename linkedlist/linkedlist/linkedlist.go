@@ -3,10 +3,14 @@ package linkedlist
 import (
 	"fmt"
 	"sync"
+
+	"github.com/cheekybits/genny/generic"
 )
 
+type Value generic.Type
+
 type Node struct {
-	value int
+	value Value
 	next  *Node
 }
 
@@ -17,7 +21,7 @@ type ItemLinkedList struct {
 }
 
 // Append adds an Item to the end of the linked list
-func (ll *ItemLinkedList) Append(item int) {
+func (ll *ItemLinkedList) Append(item Value) {
 	ll.lock.Lock()
 	defer ll.lock.Unlock()
 
@@ -37,7 +41,7 @@ func (ll *ItemLinkedList) Append(item int) {
 }
 
 // Insert adds an Item at position i
-func (ll *ItemLinkedList) Insert(i int, item int) error {
+func (ll *ItemLinkedList) Insert(i int, item Value) error {
 	ll.lock.Lock()
 	defer ll.lock.Unlock()
 
@@ -68,7 +72,7 @@ func (ll *ItemLinkedList) Insert(i int, item int) error {
 }
 
 // Removes a node at position i
-func (ll *ItemLinkedList) RemoveAt(i int) (int, error) {
+func (ll *ItemLinkedList) RemoveAt(i int) (Value, error) {
 	if i < 0 || i > ll.size {
 		return -1, fmt.Errorf("Index out of bounds")
 	}
