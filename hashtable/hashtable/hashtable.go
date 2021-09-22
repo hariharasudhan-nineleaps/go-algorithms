@@ -29,7 +29,6 @@ func (ht *ValueHashtable) Put(key Key, value Value) {
 
 	hash := hashcode(key)
 	if ht.items == nil {
-		fmt.Println(key, "nil here here")
 		ht.items = make(map[int]*linkedlist.ItemLinkedList)
 
 		ll := linkedlist.ItemLinkedList{}
@@ -39,7 +38,14 @@ func (ht *ValueHashtable) Put(key Key, value Value) {
 		return
 	}
 
-	fmt.Println(key, "here here")
+	if ht.items[hash] == nil {
+		ll := linkedlist.ItemLinkedList{}
+		ll.Append(value)
+		ht.items[hash] = &ll
+
+		return
+	}
+
 	ht.items[hash].Append(value)
 }
 

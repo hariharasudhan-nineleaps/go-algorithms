@@ -18,13 +18,17 @@ func main() {
 	fmt.Println("Inserting value --> foobar into hash")
 	ht.Put("johndoe", "johndoe")
 
-	// fmt.Println("Inserting value --> johndoe into hash")
-	// ht.Put("johndoe", "johndoe")
+	fmt.Println("Inserting value --> johndoe into hash")
+	ht.Put("johndoe", "johndoe")
 
-	// fmt.Println("Inserting value --> foojohn into hash")
-	// ht.Put("foojohn", "johndoe")
+	fmt.Println("Inserting value --> foojohn into hash")
+	ht.Put("foojohn", "johndoe")
 
-	ll := ht.Get("foobar")
-	ll.String()
+	fmt.Println("Fetching --> foobar")
+	ll1 := ht.Get("foobar")
+	ll1.String()
 
+	fmt.Println("Fetching --> foobar")
+	ll2 := ht.Get("foojohn")
+	ll2.String()
 }
